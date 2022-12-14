@@ -1,4 +1,4 @@
-package consts
+package common
 
 type SyncType string
 
