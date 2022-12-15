@@ -13,7 +13,7 @@ type Writer interface {
 }
 
 type WriterPlugin struct {
-	Port uint   `json:"uint"`
+	Base `json:",inline"`
 	Mode string `json:"mode"`
 	Writer
 }

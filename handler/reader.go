@@ -13,7 +13,7 @@ type Reader interface {
 }
 
 type ReaderPlugin struct {
-	Port uint `json:"port"`
+	Base
 	Reader
 }
 
