@@ -5,7 +5,7 @@ import "flag"
 type RunMode string
 
 const (
-	READ RunMode = "read"
+	READ  RunMode = "read"
 	WRITE RunMode = "write"
 )
 

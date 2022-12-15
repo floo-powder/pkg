@@ -17,6 +17,7 @@ type ReaderPlugin struct {
 	Reader
 }
 
+// GetConn get websocket connect to Push data to writer
 func (r *ReaderPlugin) GetConn() (*websocket.Conn, error) {
 	cli := websocket.Dialer{}
 	websocketConn, _, err := cli.Dial(
@@ -26,6 +27,7 @@ func (r *ReaderPlugin) GetConn() (*websocket.Conn, error) {
 	return websocketConn, err
 }
 
+// Push data to writer and get result
 func (r *ReaderPlugin) Put(websocketConn *websocket.Conn, obj []interface{}) error {
 	err := websocketConn.WriteJSON(Payload{Value: obj})
 	if err != nil {
