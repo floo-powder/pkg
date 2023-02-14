@@ -9,7 +9,7 @@ import (
 )
 
 type Reader interface {
-	Read()
+	Read(channel chan []interface{})
 }
 
 type ReaderPlugin struct {
@@ -29,6 +29,7 @@ func (r *ReaderPlugin) GetConn() (*websocket.Conn, error) {
 
 // Push data to writer and get result
 func (r *ReaderPlugin) Put(websocketConn *websocket.Conn, channel chan []interface{}) error {
+	go r.Read(channel)
 	for {
 		select {
 		case obj := <- channel:
