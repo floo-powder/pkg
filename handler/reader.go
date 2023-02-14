@@ -28,15 +28,25 @@ func (r *ReaderPlugin) GetConn() (*websocket.Conn, error) {
 }
 
 // Push data to writer and get result
-func (r *ReaderPlugin) Put(websocketConn *websocket.Conn, obj []interface{}) error {
-	err := websocketConn.WriteJSON(Payload{Value: obj})
-	if err != nil {
-		return err
+func (r *ReaderPlugin) Put(websocketConn *websocket.Conn, channel chan []interface{}) error {
+	for {
+		select {
+		case obj := <- channel:
+			if len(obj) == 0 {
+				return nil
+			}
+			err := websocketConn.WriteJSON(Payload{Value: obj})
+			if err != nil {
+				return err
+			}
+			var res BaseResponse
+			websocketConn.ReadJSON(&res)
+			if res.Code == 200 {
+				return nil
+			}
+			return errors.New(res.Msg)
+		default:
+			continue
+		}
 	}
-	var res BaseResponse
-	websocketConn.ReadJSON(&res)
-	if res.Code == 200 {
-		return nil
-	}
-	return errors.New(res.Msg)
 }
